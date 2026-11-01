@@ -1,0 +1,177 @@
+{
+  "n": 5,
+  "success_rate": 1.0,
+  "mean_max_stage": 4.0,
+  "claimed_success_but_failed": 0,
+  "mean_actions": 8.2,
+  "total_collisions": 0,
+  "mean_cost_usd": 0.0,
+  "mean_wall_s": 4.5200000000000005,
+  "episodes": [
+    {
+      "seed": 3,
+      "task": "cube_in_bowl",
+      "agent": "oracle",
+      "model": null,
+      "success": true,
+      "max_stage": 4,
+      "final_stage": 4,
+      "claimed_success": true,
+      "agent_summary": "oracle script done",
+      "robot_actions": 9,
+      "rejected_commands": 2,
+      "collisions": 0,
+      "bumps": 0,
+      "sim_time_s": 10.6,
+      "wall_time_s": 3.5,
+      "gif": null,
+      "grade": {
+        "stage": 4,
+        "max_stage": 4,
+        "success": true,
+        "cube_pos": [
+          0.2025,
+          -0.0807,
+          0.019
+        ],
+        "bowl_pos": [
+          0.1951,
+          -0.0864
+        ],
+        "cube_bowl_dist_xy": 0.0093
+      }
+    },
+    {
+      "seed": 4,
+      "task": "cube_in_bowl",
+      "agent": "oracle",
+      "model": null,
+      "success": true,
+      "max_stage": 4,
+      "final_stage": 4,
+      "claimed_success": true,
+      "agent_summary": "oracle script done",
+      "robot_actions": 8,
+      "rejected_commands": 6,
+      "collisions": 0,
+      "bumps": 0,
+      "sim_time_s": 11.9,
+      "wall_time_s": 5.8,
+      "gif": null,
+      "grade": {
+        "stage": 4,
+        "max_stage": 4,
+        "success": true,
+        "cube_pos": [
+          0.3026,
+          0.0055,
+          0.019
+        ],
+        "bowl_pos": [
+          0.303,
+          0.0057
+        ],
+        "cube_bowl_dist_xy": 0.0005
+      }
+    },
+    {
+      "seed": 5,
+      "task": "cube_in_bowl",
+      "agent": "oracle",
+      "model": null,
+      "success": true,
+      "max_stage": 4,
+      "final_stage": 4,
+      "claimed_success": true,
+      "agent_summary": "oracle script done",
+      "robot_actions": 8,
+      "rejected_commands": 3,
+      "collisions": 0,
+      "bumps": 0,
+      "sim_time_s": 10.5,
+      "wall_time_s": 3.7,
+      "gif": null,
+      "grade": {
+        "stage": 4,
+        "max_stage": 4,
+        "success": true,
+        "cube_pos": [
+          0.2507,
+          0.136,
+          0.019
+        ],
+        "bowl_pos": [
+          0.2468,
+          0.1396
+        ],
+        "cube_bowl_dist_xy": 0.0053
+      }
+    },
+    {
+      "seed": 6,
+      "task": "cube_in_bowl",
+      "agent": "oracle",
+      "model": null,
+      "success": true,
+      "max_stage": 4,
+      "final_stage": 4,
+      "claimed_success": true,
+      "agent_summary": "oracle script done",
+      "robot_actions": 8,
+      "rejected_commands": 5,
+      "collisions": 0,
+      "bumps": 0,
+      "sim_time_s": 10.9,
+      "wall_time_s": 5.1,
+      "gif": null,
+      "grade": {
+        "stage": 4,
+        "max_stage": 4,
+        "success": true,
+        "cube_pos": [
+          0.2542,
+          -0.0583,
+          0.019
+        ],
+        "bowl_pos": [
+          0.2526,
+          -0.0663
+        ],
+        "cube_bowl_dist_xy": 0.0082
+      }
+    },
+    {
+      "seed": 7,
+      "task": "cube_in_bowl",
+      "agent": "oracle",
+      "model": null,
+      "success": true,
+      "max_stage": 4,
+      "final_stage": 4,
+      "claimed_success": true,
+      "agent_summary": "oracle script done",
+      "robot_actions": 8,
+      "rejected_commands": 4,
+      "collisions": 0,
+      "bumps": 0,
+      "sim_time_s": 11.5,
+      "wall_time_s": 4.5,
+      "gif": null,
+      "grade": {
+        "stage": 4,
+        "max_stage": 4,
+        "success": true,
+        "cube_pos": [
+          0.2115,
+          0.1584,
+          0.019
+        ],
+        "bowl_pos": [
+          0.2069,
+          0.1606
+        ],
+        "cube_bowl_dist_xy": 0.0051
+      }
+    }
+  ]
+}

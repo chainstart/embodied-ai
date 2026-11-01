@@ -1,0 +1,20 @@
+{
+  "agent": "oracle",
+  "task": "cube_in_bowl",
+  "seeds": "3-7",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "cameras": "front,top,wrist",
+  "context": "server",
+  "image_window": 2,
+  "detail": "high",
+  "max_turns": 60,
+  "max_wall": 3600,
+  "price_in": 10.0,
+  "price_cached": 1.0,
+  "price_out": 50.0,
+  "no_gif": true,
+  "no_grid": false,
+  "out": "/workspace/embodied-ai/sim/runs",
+  "tag": ""
+}

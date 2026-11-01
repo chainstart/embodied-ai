@@ -1,0 +1,12 @@
+# environments / local binaries
+sim/.venv/
+sim/.gl/
+__pycache__/
+*.pyc
+# third-party material: re-download with scripts/fetch_refs.sh
+repos/
+papers/*.pdf
+# generated files
+sim/assets/so101/_*.xml
+sim/runs/**/images/
+sim/runs/**/rollout.gif

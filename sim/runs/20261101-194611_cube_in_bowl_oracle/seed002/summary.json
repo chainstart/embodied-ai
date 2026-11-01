@@ -1,0 +1,33 @@
+{
+  "seed": 2,
+  "task": "cube_in_bowl",
+  "agent": "oracle",
+  "model": null,
+  "success": true,
+  "max_stage": 4,
+  "final_stage": 4,
+  "claimed_success": true,
+  "agent_summary": "oracle script done",
+  "robot_actions": 8,
+  "rejected_commands": 3,
+  "collisions": 0,
+  "bumps": 0,
+  "sim_time_s": 9.9,
+  "wall_time_s": 61.1,
+  "gif": "rollout.gif",
+  "grade": {
+    "stage": 4,
+    "max_stage": 4,
+    "success": true,
+    "cube_pos": [
+      0.2191,
+      -0.0725,
+      0.019
+    ],
+    "bowl_pos": [
+      0.2205,
+      -0.074
+    ],
+    "cube_bowl_dist_xy": 0.0021
+  }
+}
