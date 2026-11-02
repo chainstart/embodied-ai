@@ -4,7 +4,8 @@ set -e
 cd "$(dirname "$0")"
 command -v uv >/dev/null || pip3 install --user -q uv --break-system-packages
 UV=$(command -v uv || echo ~/.local/bin/uv)
-[ -d .venv ] || $UV venv -q .venv --python 3.11
+# recreate the venv if it was built on another machine (e.g. inside a container) and its python is missing
+[ -x .venv/bin/python ] && .venv/bin/python -c "" 2>/dev/null || { rm -rf .venv; $UV venv -q .venv --python 3.11; }
 $UV pip install -q --python .venv/bin/python -r requirements.txt
 if [ ! -f .gl/root/usr/lib/x86_64-linux-gnu/libOSMesa.so.8 ]; then
   mkdir -p .gl/debs && cd .gl/debs

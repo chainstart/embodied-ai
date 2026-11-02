@@ -32,6 +32,29 @@ export OPENAI_API_KEY=sk-...
 .venv/bin/python run_episode.py --agent astra --seeds 0-9 --effort medium
 ```
 
+## 查看仿真环境
+
+有三种方式：
+
+**1. 交互式 3D 窗口**（需要有显示器。Windows 11 的 WSLg 可以直接弹出 Linux 窗口）
+```bash
+# 在你自己的 WSL Ubuntu 终端里运行，不要在没有显示器的容器里运行
+cd ~/work/projects/embodied-ai/sim
+./setup.sh                 # 如果 .venv 是在别的机器或容器里建的，会自动重建
+source env.sh              # 检测到 DISPLAY 时使用系统 OpenGL，会打印 MUJOCO_GL=default
+.venv/bin/python view_scene.py --seed 0                                    # 只看场景，可以用鼠标拖动、旋转、施力
+.venv/bin/python run_episode.py --agent oracle --seeds 0-2 --viewer        # 实时观看脚本完成任务
+.venv/bin/python run_episode.py --agent astra --seeds 0 --viewer           # 实时观看大模型操作
+```
+- 鼠标操作：左键拖动旋转，右键拖动平移，滚轮缩放，双击选中物体，Ctrl+右键拖动对选中物体施力。右侧面板可以切换相机（front/top/side/wrist），也可以显示接触点。
+- `--viewer-speed 2` 以 2 倍速播放；`--viewer-hold 10` 让每个回合结束后窗口多停留 10 秒。关掉窗口不影响实验，仿真会在后台继续跑完。
+- 大模型思考期间机械臂处于静止状态。窗口会照常刷新，不会因为等待而快进。
+- 如果窗口打不开，报错 `could not initialize GLFW`：先运行 `echo $DISPLAY` 确认 WSLg 可用（应该是 `:0`）。如果提示缺少库，运行 `sudo apt install libgl1 libegl1 libglfw3`。
+
+**2. 看录像**：每次运行都会生成 `runs/<批次>/seedNNN/rollout.gif`（前视相机）。在 Windows 资源管理器里打开 `\\wsl.localhost\Ubuntu\home\biostar\work\projects\embodied-ai\sim\runs\` 即可。
+
+**3. 看模型看到的画面**：`runs/<批次>/seedNNN/images/` 里是每一步回传给模型的相机图像，`transcript.md` 是图文对照的完整过程。
+
 常用参数：
 
 | 参数 | 说明 |
@@ -80,7 +103,8 @@ export OPENAI_API_KEY=sk-...
 ## 文件
 ```
 sim/
-  run_episode.py           命令行入口：批量运行、评分、汇总
+  run_episode.py           命令行入口：批量运行、评分、汇总（--viewer 实时窗口）
+  view_scene.py            在交互式 MuJoCo 窗口里查看场景
   prompts/system.md        系统提示词（{FRAME_DOC} 会被替换为坐标系说明）
   so101sim/scene.py        场景生成与随机布局（机械臂补丁、桌子、方块、碗、相机）
   so101sim/kinematics.py   5 自由度 DLS 逆运动学（位置 + 接近俯仰角 + 腕部翻滚）

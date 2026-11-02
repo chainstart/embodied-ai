@@ -5,6 +5,8 @@ Examples
   source env.sh
   # validate the pipeline (privileged scripted policy, no API key)
   .venv/bin/python run_episode.py --agent oracle --seeds 0-4
+  # watch it live in a MuJoCo window (needs a display, e.g. WSLg on Windows 11)
+  .venv/bin/python run_episode.py --agent oracle --seeds 0 --viewer
   # check the LLM loop offline (fake API client)
   .venv/bin/python run_episode.py --agent dry-run --seeds 0
   # real experiment with GPT-6 Astra
@@ -44,7 +46,7 @@ def parse_seeds(s: str):
 
 def run_one(args, seed: int, batch_dir: Path) -> dict:
     task = TASKS[args.task]
-    sim = SimBackend(task.layout, record_gif=not args.no_gif)
+    sim = SimBackend(task.layout, record_gif=not args.no_gif, viewer=args.viewer, viewer_speed=args.viewer_speed)
     sim.reset(seed)
     tools = RobotTools(sim, obs_cameras=args.cameras.split(","), grid=not args.no_grid)
     grader = make_grader(task)
@@ -91,6 +93,13 @@ def run_one(args, seed: int, batch_dir: Path) -> dict:
         **agent_stats, "gif": str(gif.name) if gif else None, "grade": grade,
     }
     log.summary(summary)
+    if args.viewer and sim.viewer is not None:
+        if args.viewer_hold > 0:
+            print(f"seed {seed}: holding the viewer for {args.viewer_hold:.0f}s (close the window to skip)", flush=True)
+            t_end = time.time() + args.viewer_hold
+            while sim.viewer is not None and sim.viewer.is_running() and time.time() < t_end:
+                time.sleep(0.05)
+        sim.close_viewer()
     return summary
 
 
@@ -111,6 +120,9 @@ def main():
     p.add_argument("--price-cached", type=float, default=1.0)
     p.add_argument("--price-out", type=float, default=50.0)
     p.add_argument("--no-gif", action="store_true")
+    p.add_argument("--viewer", action="store_true", help="open a live MuJoCo window (needs a display, e.g. WSLg)")
+    p.add_argument("--viewer-speed", type=float, default=1.0, help="viewer playback speed (1.0 = real time)")
+    p.add_argument("--viewer-hold", type=float, default=5.0, help="seconds to keep the window open after each episode")
     p.add_argument("--no-grid", action="store_true", help="disable pixel grid overlay on images")
     p.add_argument("--out", default=str(ROOT / "runs"))
     p.add_argument("--tag", default="")

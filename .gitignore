@@ -10,3 +10,4 @@ papers/*.pdf
 sim/assets/so101/_*.xml
 sim/runs/**/images/
 sim/runs/**/rollout.gif
+sim/MUJOCO_LOG.TXT

@@ -8,6 +8,7 @@ images and (optionally) depth deprojection cross this boundary.
 from __future__ import annotations
 
 import math
+import time
 from dataclasses import dataclass, field
 
 import mujoco
@@ -54,9 +55,13 @@ class RobotBackend:
 class SimBackend(RobotBackend):
     cameras = ["front", "top", "side", "wrist"]
 
-    def __init__(self, spec_factory, control_hz: int = 50, record_gif: bool = True, gif_camera: str = "front"):
+    def __init__(self, spec_factory, control_hz: int = 50, record_gif: bool = True, gif_camera: str = "front",
+                 viewer: bool = False, viewer_speed: float = 1.0):
         self.spec_factory = spec_factory  # seed -> SceneSpec
         self.control_hz = control_hz
+        self.use_viewer = viewer          # live interactive MuJoCo window (needs a display, e.g. WSLg)
+        self.viewer_speed = viewer_speed  # 1.0 = real time, 2.0 = twice as fast
+        self.viewer = None
         self.record_gif = record_gif
         self.gif_camera = gif_camera
         self.frames: list[np.ndarray] = []
@@ -100,8 +105,41 @@ class SimBackend(RobotBackend):
         self._ctrl_grip = gripper_to_rad(0.0)
         self._apply_ctrl()
         mujoco.mj_forward(self.m, self.d)
+        if self.use_viewer:
+            self._open_viewer()
         self._step(int(0.5 * self.control_hz), record=False)
         self.t0 = self.d.time
+
+    def _open_viewer(self):
+        import mujoco.viewer
+        self.close_viewer()
+        self.viewer = mujoco.viewer.launch_passive(self.m, self.d)
+        self.viewer.cam.lookat[:] = [0.2, 0.0, 0.05]
+        self.viewer.cam.distance, self.viewer.cam.azimuth, self.viewer.cam.elevation = 0.9, 150, -25
+        self._wall0 = None
+
+    def close_viewer(self):
+        if self.viewer is not None:
+            self.viewer.close()
+            self.viewer = None
+
+    def _sync_viewer(self):
+        """Show the current state and pace the simulation to (scaled) real time."""
+        v = self.viewer
+        if v is None:
+            return
+        if not v.is_running():  # window closed by the user: keep running headless
+            self.viewer = None
+            return
+        v.sync()
+        now = time.perf_counter()
+        if self._wall0 is None:
+            self._wall0, self._sim0 = now, self.d.time
+        lag = (self.d.time - self._sim0) / self.viewer_speed - (now - self._wall0)
+        if lag > 0:
+            time.sleep(lag)
+        elif lag < -0.5:  # fell behind (e.g. while waiting for the LLM): resync instead of fast-forwarding
+            self._wall0, self._sim0 = now, self.d.time
 
     def elapsed(self) -> float:
         return float(self.d.time - self.t0)
@@ -139,6 +177,7 @@ class SimBackend(RobotBackend):
         for k in range(n_ctrl):
             self._apply_ctrl()
             mujoco.mj_step(self.m, self.d, nstep=self.n_sub)
+            self._sync_viewer()
             if record and self.record_gif and k % 5 == 0:
                 self.frames.append(self.render(self.gif_camera, 320, 240))
 
