@@ -1,0 +1,23 @@
+{
+  "agent": "oracle",
+  "task": "cube_in_bowl",
+  "seeds": "0",
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "cameras": "front,top,wrist",
+  "context": "server",
+  "image_window": 2,
+  "detail": "high",
+  "max_turns": 60,
+  "max_wall": 3600,
+  "price_in": 10.0,
+  "price_cached": 1.0,
+  "price_out": 50.0,
+  "no_gif": false,
+  "viewer": true,
+  "viewer_speed": 1.0,
+  "viewer_hold": 600.0,
+  "no_grid": false,
+  "out": "/home/biostar/work/embodied-ai/sim/runs",
+  "tag": "local-preview"
+}
